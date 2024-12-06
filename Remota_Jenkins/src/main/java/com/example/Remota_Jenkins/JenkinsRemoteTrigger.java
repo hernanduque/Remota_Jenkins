@@ -50,7 +50,7 @@ public class JenkinsRemoteTrigger {
         button.addActionListener((ActionEvent e) -> {
             try {
                 // Configuración de Jenkins
-                String jenkinsUrl = "http://localhost:8090/job/LlamadoRemoto/build"; // URL del job de Jenkins
+                String jenkinsUrl = "http://localhost:8090/job/5_LlamadoRemoto/build"; // URL del job de Jenkins
                 String user = "dukeherrera73"; // Reemplaza con tu nombre de usuario
                 String apiToken = "116e3bd7f2ca367502aa89533eb1c92eea"; // Reemplaza con tu API Token generado en Jenkins
 

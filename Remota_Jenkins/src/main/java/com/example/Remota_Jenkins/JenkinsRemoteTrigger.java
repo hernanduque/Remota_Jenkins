@@ -1,5 +1,3 @@
-package com.example.Remota_Jenkins;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,26 +7,45 @@ import java.util.Base64;
 
 public class JenkinsRemoteTrigger {
     public static void main(String[] args) {
+        // Configuración global de estilo para cuadros de diálogo
+        UIManager.put("OptionPane.background", new Color(200, 230, 201)); // Verde claro
+        UIManager.put("Panel.background", new Color(200, 230, 201)); // Fondo del panel
+        UIManager.put("OptionPane.messageForeground", new Color(27, 94, 32)); // Texto verde oscuro
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.BOLD, 14)); // Fuente del mensaje
+        UIManager.put("Button.background", new Color(34, 139, 34)); // Botón verde oscuro
+        UIManager.put("Button.foreground", Color.WHITE); // Texto blanco en botones
+        UIManager.put("Button.font", new Font("Arial", Font.BOLD, 12)); // Fuente de botones
+
         // Crear la ventana principal
         JFrame frame = new JFrame("Ejecutar Tarea Remota en Jenkins");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 500);
-        frame.setLayout(new GridBagLayout()); // Usar GridBagLayout para centrar los componentes
 
-        // Establecer color de fondo
-        frame.getContentPane().setBackground(new Color(200, 230, 201)); // Verde claro
+        // Establecer color de fondo para todo el contenido
+        Color verdeClaro = new Color(200, 230, 201); // Verde claro
+        frame.getContentPane().setBackground(verdeClaro);
+
+        // Crear borde verde oscuro alrededor del marco
+        JPanel borderPanel = new JPanel();
+        borderPanel.setBackground(new Color(34, 139, 34)); // Verde oscuro
+        borderPanel.setLayout(new BorderLayout());
+        frame.setContentPane(borderPanel);
+
+        // Panel interior con diseño y componentes
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBackground(verdeClaro); // Aplicar color verde claro
+        borderPanel.add(contentPanel, BorderLayout.CENTER);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10); // Margen entre componentes
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-
         // Crear un logo
         JLabel logoLabel = new JLabel();
         try {
             ImageIcon logoIcon = new ImageIcon("F:/Desktop/2024-S2/PRUEBAS/JENKINS/Remota_Jenkins/Remota_Jenkins/LOGO.png"); // Cambia esto por la ruta de tu imagen
-                    Image logoImage = logoIcon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH);
+            Image logoImage = logoIcon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH);
             logoLabel.setIcon(new ImageIcon(logoImage));
         } catch (Exception e) {
             logoLabel.setText("Logo no encontrado");
@@ -64,27 +81,16 @@ public class JenkinsRemoteTrigger {
                 connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Authorization", "Basic " + encodedAuth);
-                UIManager UI=new UIManager();
 
                 // Enviar solicitud y procesar respuesta
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-
-                    UI.put("Panel.background", new Color(27, 94, 32));
-                    UI.put("OptionPane.messageForeground", Color.decode("#b9f6ca"));
                     JOptionPane.showMessageDialog(frame, "Tarea ejecutada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
                 } else if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-                    UI.put("Panel.background", new Color(255, 195, 0));
-                    UI.put("OptionPane.messageForeground", Color.decode("#388e3c"));
                     JOptionPane.showMessageDialog(frame, "Error 403: Acceso prohibido. Verifica el usuario y token.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    UI.put("Panel.background", new Color(255, 195, 0));
-                    UI.put("OptionPane.messageForeground", Color.decode("#388e3c"));
                     JOptionPane.showMessageDialog(frame, "Error 401: No autorizado. Verifica las credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    UI.put("Panel.background", new Color(255, 195, 0));
-                    UI.put("OptionPane.messageForeground", Color.decode("#388e3c"));
                     JOptionPane.showMessageDialog(frame, "Error al ejecutar la tarea. Código: " + responseCode, "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 connection.disconnect();
@@ -97,16 +103,15 @@ public class JenkinsRemoteTrigger {
         // Configuración de la posición de los componentes
         gbc.gridx = 0;
         gbc.gridy = 0;
-        frame.add(logoLabel, gbc); // Agregar logo
+        contentPanel.add(logoLabel, gbc); // Agregar logo
 
         gbc.gridy = 1;
-        frame.add(groupLabel, gbc); // Agregar texto "GRUPO 4"
+        contentPanel.add(groupLabel, gbc); // Agregar texto "GRUPO 4"
 
         gbc.gridy = 2;
-        frame.add(button, gbc); // Agregar botón
+        contentPanel.add(button, gbc); // Agregar botón
 
         // Mostrar ventana
         frame.setVisible(true);
     }
 }
-

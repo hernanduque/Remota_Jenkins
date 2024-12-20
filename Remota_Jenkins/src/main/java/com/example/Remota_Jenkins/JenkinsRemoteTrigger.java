@@ -19,7 +19,7 @@ public class JenkinsRemoteTrigger {
         // Crear la ventana principal
         JFrame frame = new JFrame("Ejecutar Tarea Remota en Jenkins");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 500);
+        frame.setSize(450, 500);
 
         // Establecer color de fondo para todo el contenido
         Color verdeClaro = new Color(200, 230, 201); // Verde claro
@@ -41,6 +41,7 @@ public class JenkinsRemoteTrigger {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
+
         // Crear un logo
         JLabel logoLabel = new JLabel();
         try {
@@ -53,12 +54,12 @@ public class JenkinsRemoteTrigger {
         }
 
         // Agregar etiqueta con el texto "GRUPO 4"
-        JLabel groupLabel = new JLabel("GRUPO 4");
-        groupLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel groupLabel = new JLabel("PRUEBAS Y GESTION DE LA CONFIGURACION GRUPO 4");
+        groupLabel.setFont(new Font("Arial", Font.BOLD, 14));
         groupLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Crear el botón para ejecutar la tarea
-        JButton button = new JButton("Ejecutar Hola Mundo");
+        JButton button = new JButton("Ejecutar Remoto  Hola Mundo");
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBackground(new Color(34, 139, 34)); // Verde oscuro
         button.setForeground(Color.WHITE); // Texto blanco

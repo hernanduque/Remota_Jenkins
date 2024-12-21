@@ -11,6 +11,7 @@ public class JenkinsRemoto {
     public static void main(String[] args) {
         // Crear la ventana principal
         JFrame frame = new JFrame("Ejecutar Tarea Remota en Jenkins");
+        Frame frame = new JFrame("Ejecutar Tarea Remota en Jenkins");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 500);
         frame.setLayout(new GridBagLayout()); // Usar GridBagLayout para centrar los componentes

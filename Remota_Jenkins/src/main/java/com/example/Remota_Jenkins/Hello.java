@@ -3,8 +3,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.File;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 
 public class Hello {
@@ -22,17 +21,22 @@ public class Hello {
                         + "<style>"
                         + "body { background-color: #90EE90; font-family: Arial, sans-serif; text-align: center; padding: 20px; }"
                         + "h1 { color: darkgreen; }"
-                        + "h2 { color: darkblue; }"
-                        + "img { width: 300px; height: auto; margin: 20px 0; }"
+                        + "h2 { color: darkgreen; }"
+                        + "img { width: 150px; height: auto; margin: 20px 0; border: 2px solid darkgreen; border-radius: 50%;"
+                        + "      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease-in-out; }"
+                        + "img:hover { transform: scale(1.2); }"
                         + "</style>"
                         + "</head>"
                         + "<body>"
-                        // Imagen cargada desde la ruta "/static/LOGO.png"
-                        + "<h1>!HOLA MUNDO! :) </h1>"
+                        + "<h1>!HOLA MUNDO! :)  Y FELIZ NAVIDAD</h1>"
+                        + "<h1>POLITECNICO JAIME ISAZA CADAVID</h1>"
                         + "<h1>PRUEBAS Y GESTION DE LA CONFIGURACION</h1>"
                         + "<h2>GRUPO 4</h2>"
+                        + "<h2>2024-S2</h2>"
+                        + "<img src=\"/static/LOGO.png\" alt=\"Icono de árbol\">"
                         + "</body>"
                         + "</html>";
+
 
                 // Enviar los encabezados de la respuesta con el código HTTP 200 OK
                 exchange.sendResponseHeaders(200, response.getBytes().length);
@@ -44,32 +48,28 @@ public class Hello {
             }
         });
 
-        // Crear un manejador para la ruta "/static/" que sirve archivos estáticos como imágenes
+        // Crear un contexto para servir archivos estáticos
         server.createContext("/static", new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) throws IOException {
-                // Resolviendo la ruta completa al archivo dentro de la carpeta "resources"
-                String path = exchange.getRequestURI().getPath();
-                // Usamos la carpeta "resources" dentro del proyecto
-                File file = new File("F:/Desktop/2024-S2/PRUEBAS/JENKINS/Remota_Jenkins/Remota_Jenkins/src/main/resources" + path);
+                // Obtener la ruta del archivo solicitado
+                String filePath = "src/main/resources/static" + exchange.getRequestURI().getPath();
 
-                if (file.exists() && !file.isDirectory()) {
-                    // Obtener el tipo MIME de la imagen
-                    String mimeType = Files.probeContentType(file.toPath());
-                    exchange.getResponseHeaders().add("Content-Type", mimeType);
+                // Leer el archivo desde el sistema de archivos
+                try (InputStream is = getClass().getClassLoader().getResourceAsStream(filePath)) {
+                    if (is == null) {
+                        // Si el archivo no existe, responder con 404 Not Found
+                        String notFoundResponse = "404 (Not Found)";
+                        exchange.sendResponseHeaders(404, notFoundResponse.getBytes().length);
+                        exchange.getResponseBody().write(notFoundResponse.getBytes());
+                        exchange.close();
+                        return;
+                    }
 
-                    // Leer y enviar la imagen
-                    byte[] imageBytes = Files.readAllBytes(file.toPath());
-                    exchange.sendResponseHeaders(200, imageBytes.length);
+                    // Configurar los encabezados de respuesta
+                    exchange.sendResponseHeaders(200, is.available());
                     OutputStream os = exchange.getResponseBody();
-                    os.write(imageBytes);
-                    os.close();
-                } else {
-                    // Si el archivo no se encuentra, enviar un error 404
-                    String response = "Archivo no encontrado.";
-                    exchange.sendResponseHeaders(404, response.getBytes().length);
-                    OutputStream os = exchange.getResponseBody();
-                    os.write(response.getBytes());
+                    is.transferTo(os);
                     os.close();
                 }
             }

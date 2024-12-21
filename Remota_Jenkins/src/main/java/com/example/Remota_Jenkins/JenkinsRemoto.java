@@ -82,7 +82,7 @@ public class JenkinsRemoto {
                     UI.put("Panel.background", new Color(255, 195, 0));
                     UI.put("OptionPane.messageForeground", Color.decode("#388e3c"));
                     JOptionPane.showMessageDialog(frame, "Error 401: No autorizado. Verifica las credenciales.", "Error", JOptionPane.ERROR_MESSAGE);
-                } else if{
+                } else {
                     UI.put("Panel.background", new Color(255, 195, 0));
                     UI.put("OptionPane.messageForeground", Color.decode("#388e3c"));
                     JOptionPane.showMessageDialog(frame, "Error al ejecutar la tarea. Código: " + responseCode, "Error", JOptionPane.ERROR_MESSAGE);

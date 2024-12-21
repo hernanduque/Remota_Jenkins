@@ -8,6 +8,9 @@ import java.net.InetSocketAddress;
 
 public class Hello {
     public static void main(String[] args) throws Exception {
+        // Código innecesario para forzar un error en la evaluación de calidad
+        int unusedVariable = 42; // Esta variable no se usa
+
         // Crear el servidor HTTP en el puerto 8000
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
@@ -37,7 +40,6 @@ public class Hello {
                         + "</body>"
                         + "</html>";
 
-
                 // Enviar los encabezados de la respuesta con el código HTTP 200 OK
                 exchange.sendResponseHeaders(200, response.getBytes().length);
 
@@ -52,6 +54,11 @@ public class Hello {
         server.createContext("/static", new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) throws IOException {
+                // Código inalcanzable deliberado
+                if (false) {
+                    System.out.println("Este código nunca se ejecutará.");
+                }
+
                 // Obtener la ruta del archivo solicitado
                 String filePath = "src/main/resources/static" + exchange.getRequestURI().getPath();
 

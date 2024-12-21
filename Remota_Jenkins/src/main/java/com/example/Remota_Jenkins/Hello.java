@@ -11,8 +11,20 @@ public class Hello {
         // Código innecesario para forzar un error en la evaluación de calidad
         int unusedVariable = 42; // Esta variable no se usa
 
+        // Manejo incorrecto de excepciones
+        try {
+            int a = 1 / 0; // Producir una excepción
+        } catch (Exception e) {
+            // Catch vacío, mala práctica
+        }
+
         // Crear el servidor HTTP en el puerto 8000
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+
+        // Código inalcanzable deliberado
+        if (false) {
+            System.out.println("Este código nunca se ejecutará.");
+        }
 
         // Definir un manejador para la ruta "/"
         server.createContext("/", new HttpHandler() {
@@ -46,7 +58,7 @@ public class Hello {
                 // Enviar la respuesta
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
-                os.close();
+                // Error deliberado: recurso no cerrado explícitamente
             }
         });
 
@@ -77,7 +89,7 @@ public class Hello {
                     exchange.sendResponseHeaders(200, is.available());
                     OutputStream os = exchange.getResponseBody();
                     is.transferTo(os);
-                    os.close();
+                    // Error deliberado: recurso no cerrado explícitamente
                 }
             }
         });
